@@ -98,6 +98,8 @@ Usa 90 ml de vermú y 30 ml de soda por vaso, y botellas de 750 ml. Si cambian l
 3. **Para subir archivos nuevos o reemplazarlos:** **Add file → Upload files** → arrastrá los archivos o carpetas → **Commit changes**. Si ya existe un archivo con el mismo nombre en la misma carpeta, lo reemplaza.
 4. Esperá 1-2 minutos y recargá la web (si no ves el cambio: Cmd+Shift+R).
 
+**Si no ves los cambios:** el navegador guarda copias de `styles.css`, `main.js` y las fotos. En `index.html` esos archivos se cargan con `?v=3` al final (ej. `css/styles.css?v=3`). Cuando cambies uno de ellos, subí ese número (`?v=4`) en `index.html` y así todos ven la versión nueva.
+
 ### Primera vez: activar GitHub Pages
 **Settings → Pages → Branch: `main` / `(root)` → Save.**
 

@@ -168,6 +168,6 @@ footer .logo{font-size:36px}
 }
 
 /* Fotos */
-img.foto{display:block;width:100%;height:auto;object-fit:cover;padding:0}
+img.foto{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center top;padding:0;background:var(--papel)}
 .firma{display:flex;align-items:center;gap:14px}
-.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--tinta);flex-shrink:0}
+.firma .avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--tinta);flex-shrink:0}
