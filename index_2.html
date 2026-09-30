@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sifón, vermú casero hecho en Montevideo. Se toma con hielo y un chorrito de soda.">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Sifón Vermú</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ultra&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+/* Layout: azulejo de cocina + barra de bar; secciones alternan azulejo claro y azul sifón, con un sifón interactivo en el hero */
+:root{
+  --azul:#2F5D8A; --azul-hondo:#1F4468; --vidrio:#A9C8C0; --rojo:#C8372D; --rojo-hondo:#9E2A22;
+  --azulejo:#F3EEE3; --papel:#FFFDF7; --tinta:#1C2B3A; --tinta-suave:#4E5B68; --linea:#DCD3C1; --metal:#8C9196; --metal-claro:#B8BEC4;
+  --f-display:'Ultra', 'Rockwell Extra Bold', Georgia, serif;
+  --f-texto:'Courier Prime', 'Courier New', ui-monospace, monospace;
+  --ancho:1180px;
+  color-scheme: light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--azulejo);color:var(--tinta);font-family:var(--f-texto);font-size:17px;line-height:1.6}
+a{color:var(--azul)}
+:focus-visible{outline:3px solid var(--rojo);outline-offset:3px}
+.wrap{max-width:var(--ancho);margin:0 auto;padding-inline:clamp(16px,4vw,40px)}
+.azulejos{background-color:var(--azulejo);background-image:repeating-linear-gradient(0deg,transparent 0 58px,#E4DBCA 58px 60px),repeating-linear-gradient(90deg,transparent 0 58px,#E4DBCA 58px 60px)}
+.azulejos-azul{background-color:var(--azul);background-image:repeating-linear-gradient(0deg,transparent 0 58px,var(--azul-hondo) 58px 60px),repeating-linear-gradient(90deg,transparent 0 58px,var(--azul-hondo) 58px 60px)}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;line-height:1.02;text-wrap:balance;margin:0}
+h2{font-size:clamp(40px,6vw,72px)}
+.etiqueta{font-weight:700;letter-spacing:.22em;text-transform:uppercase;font-size:14px}
+p{margin:0;max-width:62ch}
+
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--papel);border-bottom:3px solid var(--tinta)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.logo{font-family:var(--f-display);font-size:30px;color:var(--rojo);text-decoration:none;text-shadow:2px 2px 0 var(--azul);line-height:1}
+.nav ul{list-style:none;display:flex;gap:4px;margin:0;padding:0}
+.nav ul a{display:block;padding:10px 12px;text-decoration:none;color:var(--tinta);font-weight:700;font-size:15px;border-radius:999px}
+.nav ul a:hover{background:var(--azulejo)}
+.nav .cta-nav{background:var(--rojo);color:var(--papel)}
+.nav .cta-nav:hover{background:var(--rojo-hondo)}
+.menu-btn{display:none;font:inherit;font-weight:700;background:var(--tinta);color:var(--papel);border:0;border-radius:999px;padding:10px 16px;min-height:44px;cursor:pointer}
+@media (max-width:860px){
+  .menu-btn{display:block}
+  .nav ul{display:none;position:absolute;left:0;right:0;top:100%;flex-direction:column;background:var(--papel);border-bottom:3px solid var(--tinta);padding:8px 16px 16px}
+  .nav.abierto ul{display:flex}
+  .nav ul a{padding:14px 12px}
+}
+
+/* HERO */
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-block:clamp(40px,7vw,90px)}
+.hero h1{font-size:clamp(84px,15vw,190px);color:var(--rojo);text-shadow:6px 6px 0 var(--azul);letter-spacing:-.01em}
+.hero .bajada{font-size:clamp(20px,2.4vw,26px);margin-top:18px;max-width:30ch}
+.hero .sobre{display:inline-block;background:var(--azul);color:var(--papel);padding:6px 14px;margin-bottom:18px}
+.botones{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 24px;font:inherit;font-weight:700;text-decoration:none;border:3px solid var(--tinta);border-radius:999px;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease;box-shadow:4px 4px 0 var(--tinta)}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--tinta)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--tinta)}
+.btn-rojo{background:var(--rojo);color:var(--papel)}
+.btn-claro{background:var(--papel);color:var(--tinta)}
+.btn-azul{background:var(--azul);color:var(--papel)}
+.escena{background:var(--papel);border:3px solid var(--tinta);border-radius:24px;padding:18px;box-shadow:8px 8px 0 var(--azul);display:flex;flex-direction:column;gap:12px}
+.escena svg{width:100%;height:auto;display:block;max-width:100%}
+.escena .pie{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:15px}
+.contador{font-variant-numeric:tabular-nums;font-weight:700}
+#palanca{transition:transform .18s ease;transform-origin:118px 30px;transform-box:view-box}
+.apretado #palanca{transform:rotate(12deg)}
+#chorro{stroke-dasharray:260;stroke-dashoffset:260}
+.apretado #chorro{animation:chorro .9s ease-out forwards}
+@keyframes chorro{0%{stroke-dashoffset:260;opacity:1}55%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:-260;opacity:0}}
+#liquido{transition:y .8s ease, height .8s ease}
+.burbuja{animation:sube 1.6s ease-in forwards}
+@keyframes sube{from{transform:translateY(0);opacity:.9}to{transform:translateY(-90px);opacity:0}}
+button.sifon-hit{all:unset;cursor:pointer;display:block;border-radius:16px}
+button.sifon-hit:focus-visible{outline:3px solid var(--rojo);outline-offset:4px}
+
+/* MARQUESINA */
+.marquesina{background:var(--rojo);color:var(--papel);border-block:3px solid var(--tinta);overflow:hidden;white-space:nowrap}
+.marquesina .pista{display:inline-flex;gap:40px;padding-block:14px;font-family:var(--f-display);font-size:24px;animation:corre 26s linear infinite}
+@keyframes corre{to{transform:translateX(-50%)}}
+
+section{scroll-margin-top:80px}
+.seccion{padding-block:clamp(60px,9vw,110px)}
+.cabeza{display:flex;flex-direction:column;gap:14px;margin-bottom:40px}
+
+/* PRODUCTO */
+.producto .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:center}
+.botella{display:flex;justify-content:center}
+.botella svg{width:min(300px,100%);height:auto}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.tab{font:inherit;font-weight:700;min-height:44px;padding:8px 18px;border:3px solid var(--tinta);border-radius:999px;background:var(--papel);color:var(--tinta);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--tinta);color:var(--papel)}
+.ficha{background:var(--papel);border:3px solid var(--tinta);border-radius:6px;overflow:hidden}
+.ficha dl{margin:0;display:grid;grid-template-columns:max-content 1fr}
+.ficha dt,.ficha dd{margin:0;padding:14px 20px;border-bottom:2px dashed var(--linea)}
+.ficha dt{font-weight:700;color:var(--tinta-suave);text-transform:uppercase;letter-spacing:.12em;font-size:13px;display:flex;align-items:center}
+.ficha dl > :nth-last-child(-n+2){border-bottom:0}
+.ficha .titulo-ficha{background:var(--azul);color:var(--papel);padding:16px 20px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ficha .titulo-ficha h3{font-size:34px}
+.pendiente{color:var(--rojo);font-weight:700}
+
+/* RECETA */
+.receta{color:var(--papel)}
+.receta .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.receta h2{text-shadow:5px 5px 0 var(--rojo)}
+.tarjeta{background:var(--papel);color:var(--tinta);padding:clamp(24px,4vw,44px);box-shadow:10px 10px 0 var(--tinta);transform:rotate(-1.2deg)}
+.tarjeta .top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px dashed var(--tinta);padding-bottom:12px;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+.tarjeta .formula{font-family:var(--f-display);font-size:clamp(64px,9vw,104px);color:var(--rojo);line-height:1;margin-bottom:14px}
+.tarjeta ol{margin:0;padding-left:1.4em;display:flex;flex-direction:column;gap:10px;font-size:18px}
+.calc{background:var(--azul-hondo);border:3px solid var(--papel);border-radius:18px;padding:clamp(20px,3vw,32px);display:flex;flex-direction:column;gap:20px}
+.calc label{font-weight:700}
+.calc input[type=range]{width:100%;accent-color:var(--rojo);min-height:44px}
+.vasos{font-family:var(--f-display);font-size:56px;line-height:1;font-variant-numeric:tabular-nums}
+.resultados{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.res{background:rgba(255,253,247,.1);border:2px solid rgba(255,253,247,.35);border-radius:12px;padding:14px}
+.res .num{font-family:var(--f-display);font-size:34px;font-variant-numeric:tabular-nums;line-height:1.1}
+.res .lbl{font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+
+/* NOSOTROS */
+.nosotros .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.foto{aspect-ratio:4/5;max-width:100%;background:var(--vidrio);border:12px solid var(--papel);box-shadow:8px 8px 0 var(--tinta);display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;transform:rotate(2deg);color:var(--tinta)}
+.nosotros .texto{display:flex;flex-direction:column;gap:20px;min-width:0}
+.firmas{display:flex;gap:16px;flex-wrap:wrap}
+.firma{background:var(--papel);border:3px solid var(--tinta);border-radius:12px;padding:14px 18px;min-width:0}
+.firma strong{font-family:var(--f-display);font-weight:400;font-size:26px;display:block;color:var(--azul)}
+.linea-tiempo{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:0;border-left:3px solid var(--rojo)}
+.linea-tiempo li{padding:0 0 14px 20px;position:relative}
+.linea-tiempo li::before{content:"";position:absolute;left:-9px;top:6px;width:15px;height:15px;border-radius:50%;background:var(--azulejo);border:3px solid var(--rojo)}
+.linea-tiempo b{display:block}
+
+/* TIENDAS */
+.tiendas{background:var(--papel);border-block:3px solid var(--tinta)}
+.tiendas .grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}
+.ventajas{list-style:none;margin:24px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.ventajas li{display:flex;gap:14px;align-items:flex-start}
+.ventajas .ico{flex-shrink:0;width:40px;height:40px;border-radius:50%;background:var(--azul);color:var(--papel);display:flex;align-items:center;justify-content:center}
+.form{background:var(--azulejo);border:3px solid var(--tinta);border-radius:18px;padding:clamp(20px,3vw,32px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.campo{display:flex;flex-direction:column;gap:6px;min-width:0}
+.campo.full{grid-column:1/-1}
+.campo label{font-weight:700;font-size:15px}
+.campo input,.campo select,.campo textarea{font:inherit;font-size:16px;padding:12px 14px;border:2px solid var(--tinta);border-radius:10px;background:var(--papel);color:var(--tinta);min-height:48px;width:100%}
+.campo textarea{min-height:96px;resize:vertical}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{font:inherit;font-weight:700;font-size:22px;width:48px;height:48px;border-radius:50%;border:2px solid var(--tinta);background:var(--papel);color:var(--tinta);cursor:pointer}
+.stepper output{font-family:var(--f-display);font-size:30px;min-width:2.2ch;text-align:center;font-variant-numeric:tabular-nums}
+.total{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:2px dashed var(--tinta);padding-top:14px}
+.error{color:var(--rojo-hondo);font-weight:700;font-size:15px}
+.resumen{grid-column:1/-1;background:var(--papel);border:2px solid var(--tinta);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.resumen pre{margin:0;white-space:pre-wrap;font:inherit;font-size:15px}
+
+/* CONTACTO */
+.contacto{color:var(--papel)}
+.contacto h2{text-shadow:5px 5px 0 var(--tinta)}
+.canales{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:32px}
+.canal{background:var(--papel);color:var(--tinta);border:3px solid var(--tinta);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.canal .dato{font-weight:700;font-size:19px;overflow-wrap:anywhere}
+.canal button{align-self:flex-start;font:inherit;font-size:14px;font-weight:700;padding:8px 14px;min-height:40px;border:2px solid var(--tinta);border-radius:999px;background:var(--azulejo);color:var(--tinta);cursor:pointer}
+footer{background:var(--tinta);color:var(--azulejo);padding-block:36px;font-size:15px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .logo{font-size:36px}
+
+@media (max-width:860px){
+  .hero .wrap,.producto .grid,.receta .grid,.nosotros .grid,.tiendas .grid{grid-template-columns:1fr}
+  .canales{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
+  .foto{max-width:420px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .marquesina .pista{animation:none}
+  .burbuja,.apretado #chorro{animation-duration:.01s}
+  .btn{transition:none}
+}
+</style>
+</head>
+<body>
+
+
+<nav class="nav" id="nav" aria-label="Principal">
+  <div class="wrap">
+    <a class="logo" href="#inicio">Sifón</a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="menu">Menú</button>
+    <ul id="menu">
+      <li><a href="#producto">El producto</a></li>
+      <li><a href="#receta">La receta</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#tiendas" class="cta-nav">Para tiendas</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero azulejos" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="etiqueta sobre">Vermú casero · Montevideo</span>
+      <h1>Sifón</h1>
+      <p class="bajada">Vermú rojo hecho en casa, en tandas chicas. Se toma con hielo y un chorrito de soda.</p>
+      <div class="botones">
+        <a class="btn btn-rojo" href="#tiendas">Quiero venderlo en mi local</a>
+        <a class="btn btn-claro" href="#receta">Cómo se toma</a>
+      </div>
+    </div>
+    <div class="escena">
+      <button class="sifon-hit" id="sifonBtn" aria-label="Apretar el sifón y servir un chorrito de soda">
+        <svg viewBox="0 0 400 400" role="img" aria-labelledby="svgT">
+          <title id="svgT">Un sifón sirviendo soda en un vaso de vermú</title>
+          <defs>
+            <clipPath id="vaso-clip"><path d="M252 232 L352 232 L340 372 L264 372 Z"/></clipPath>
+          </defs>
+          <!-- sifón -->
+          <rect x="60" y="112" width="120" height="264" rx="26" fill="#2F5D8A"/>
+          <rect x="80" y="136" width="14" height="212" rx="7" fill="#A9C8C0" opacity=".65"/>
+          <rect x="96" y="200" width="68" height="92" fill="#F3EEE3" stroke="#1C2B3A" stroke-width="2"/>
+          <text x="130" y="258" text-anchor="middle" font-family="Ultra, Georgia, serif" font-size="40" fill="#C8372D">S</text>
+          <rect x="66" y="100" width="108" height="16" rx="6" fill="#8C9196"/>
+          <rect x="74" y="42" width="92" height="64" rx="24" fill="#B8BEC4"/>
+          <rect x="150" y="60" width="86" height="16" rx="8" fill="#8C9196"/>
+          <g id="palanca"><rect x="112" y="22" width="96" height="14" rx="7" fill="#8C9196" transform="rotate(-10 112 29)"/></g>
+          <!-- chorro -->
+          <path id="chorro" d="M236 68 Q300 66 302 240" fill="none" stroke="#A9C8C0" stroke-width="7" stroke-linecap="round"/>
+          <!-- vaso -->
+          <g clip-path="url(#vaso-clip)">
+            <rect id="liquido" x="240" y="300" width="130" height="90" fill="#C8372D"/>
+            <rect x="270" y="296" width="26" height="24" rx="4" fill="#FFFDF7" opacity=".55" transform="rotate(-14 283 308)"/>
+            <rect x="304" y="306" width="24" height="22" rx="4" fill="#FFFDF7" opacity=".55" transform="rotate(12 316 317)"/>
+            <g id="burbujas"></g>
+          </g>
+          <path d="M252 232 L352 232 L340 372 L264 372 Z" fill="none" stroke="#1C2B3A" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="344" cy="236" r="20" fill="#E8862A" stroke="#1C2B3A" stroke-width="3"/>
+          <circle cx="344" cy="236" r="12" fill="none" stroke="#FFFDF7" stroke-width="2" opacity=".8"/>
+          <rect x="0" y="378" width="400" height="22" fill="#1C2B3A"/>
+        </svg>
+      </button>
+      <div class="pie">
+        <span>Tocá el sifón para servir.</span>
+        <span class="contador" aria-live="polite"><span id="chorritos">0</span> chorritos servidos</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="marquesina" aria-hidden="true">
+  <div class="pista" id="pista">
+    <span>VERMÚ ROJO</span><span>✦</span><span>HECHO EN MONTEVIDEO</span><span>✦</span><span>TANDAS CHICAS</span><span>✦</span><span>3 + 1</span><span>✦</span><span>¡OTRA VUELTA!</span><span>✦</span>
+  </div>
+</div>
+
+<section class="seccion producto" id="producto">
+  <div class="wrap">
+    <div class="cabeza">
+      <span class="etiqueta" style="color:var(--azul)">El producto</span>
+      <h2 style="color:var(--rojo)">Una botella, dos recetas en prueba</h2>
+      <p>Estamos afinando dos versiones. Elegí una para ver su ficha.</p>
+    </div>
+    <div class="grid">
+      <div class="botella">
+        <svg viewBox="0 0 220 480" role="img" aria-label="Botella de Sifón vermú rojo">
+          <rect x="88" y="10" width="44" height="30" rx="6" fill="#C8372D"/>
+          <path d="M92 40 L128 40 L128 120 Q190 150 190 220 L190 450 Q190 470 170 470 L50 470 Q30 470 30 450 L30 220 Q30 150 92 120 Z" fill="#4A1A16"/>
+          <rect x="40" y="250" width="140" height="170" rx="4" fill="#F3EEE3" stroke="#2F5D8A" stroke-width="4"/>
+          <text x="110" y="280" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="11" letter-spacing="3" fill="#2F5D8A" id="botellaTipo">VERMÚ ROJO</text>
+          <text x="110" y="330" text-anchor="middle" font-family="Ultra, Georgia, serif" font-size="38" fill="#C8372D">Sifón</text>
+          <rect x="52" y="346" width="116" height="18" fill="#2F5D8A"/>
+          <text x="110" y="392" text-anchor="middle" font-family="Courier Prime, monospace" font-size="12" fill="#1C2B3A" id="botellaN">Receta N°1</text>
+          <text x="110" y="408" text-anchor="middle" font-family="Courier Prime, monospace" font-size="11" fill="#4E5B68">750 ml</text>
+          <rect x="54" y="140" width="10" height="290" rx="5" fill="#FFFDF7" opacity=".12"/>
+        </svg>
+      </div>
+      <div>
+        <div class="tabs" role="tablist" aria-label="Recetas">
+          <button class="tab" role="tab" id="tab1" aria-selected="true" aria-controls="ficha">N°1 · Rojo</button>
+          <button class="tab" role="tab" id="tab2" aria-selected="false" aria-controls="ficha">N°2 · En prueba</button>
+        </div>
+        <div class="ficha" id="ficha" role="tabpanel" aria-labelledby="tab1">
+          <div class="titulo-ficha"><h3 id="fNombre">Receta N°1</h3><span class="etiqueta" id="fEstado">Tanda N°01</span></div>
+          <dl>
+            <dt>Estilo</dt><dd id="fEstilo">Vermú rojo</dd>
+            <dt>Vino base</dt><dd id="fVino"><span class="pendiente">[vino]</span></dd>
+            <dt>Botánicos</dt><dd id="fHierbas"><span class="pendiente">[hierbas de la receta]</span></dd>
+            <dt>Maceración</dt><dd id="fMacera"><span class="pendiente">[x] días</span></dd>
+            <dt>Graduación</dt><dd id="fGrad"><span class="pendiente">[xx]% vol</span></dd>
+            <dt>Botella</dt><dd>750 ml · rinde unos 8 vasos</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion receta azulejos-azul" id="receta">
+  <div class="wrap">
+    <div class="cabeza">
+      <span class="etiqueta">La receta</span>
+      <h2>Tres de vermú,<br>uno de soda</h2>
+    </div>
+    <div class="grid">
+      <article class="tarjeta">
+        <div class="top"><span class="etiqueta" style="color:var(--azul)">Receta de la casa</span><span>Sifón · vermú rojo</span></div>
+        <div class="formula">3 + 1</div>
+        <ol>
+          <li>Llená el vaso de hielo, bastante.</li>
+          <li>Tres partes de vermú Sifón.</li>
+          <li>Un chorrito de soda, de sifón si hay.</li>
+          <li>Una rodaja de naranja o una piel de limón.</li>
+          <li>Aceitunas y papas fritas al costado.</li>
+        </ol>
+      </article>
+      <div class="calc">
+        <div>
+          <label for="nVasos">¿Cuántos vasos servís?</label>
+          <div class="vasos"><output id="vasosOut" for="nVasos">6</output> vasos</div>
+        </div>
+        <input type="range" id="nVasos" min="1" max="40" value="6" aria-describedby="calcNota">
+        <div class="resultados">
+          <div class="res"><div class="num" id="rVermu">540 ml</div><div class="lbl">Vermú</div></div>
+          <div class="res"><div class="num" id="rSoda">180 ml</div><div class="lbl">Soda</div></div>
+          <div class="res"><div class="num" id="rBotellas">1</div><div class="lbl">Botellas de 750 ml</div></div>
+          <div class="res"><div class="num" id="rNaranjas">1</div><div class="lbl">Naranjas</div></div>
+        </div>
+        <p id="calcNota" style="font-size:14px">Cuenta 90 ml de vermú y 30 ml de soda por vaso. Una naranja da unas 8 rodajas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion nosotros azulejos" id="nosotros">
+  <div class="wrap">
+    <div class="grid">
+      <div class="foto">[foto: Facu y Bruno con el sifón]</div>
+      <div class="texto">
+        <span class="etiqueta" style="color:var(--azul)">Sobre nosotros</span>
+        <h2 style="color:var(--rojo)">¡Otra vuelta!</h2>
+        <p>Somos dos amigos de Montevideo. Arrancamos haciendo vermú en la cocina, con dos recetas de prueba y un sifón en la mesa. La idea es simple: un vermú rico, hecho acá, para la previa y el mediodía del sábado.</p>
+        <ol class="linea-tiempo" aria-label="Cómo va el proyecto">
+          <li><b>Hoy</b>Probando las dos recetas.</li>
+          <li><b>Próximo</b>Primera tanda para amigos y familia.</li>
+          <li><b>Después</b>Almacenes, bares y vinotecas.</li>
+        </ol>
+        <div class="firmas">
+          <div class="firma"><strong>Facu</strong>[rol]</div>
+          <div class="firma"><strong>Bruno</strong>[rol]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion tiendas" id="tiendas">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="cabeza" style="margin-bottom:0">
+          <span class="etiqueta" style="color:var(--azul)">Para tiendas, bares y almacenes</span>
+          <h2 style="color:var(--rojo)">Tené Sifón en tu mostrador</h2>
+          <p>Vendemos por caja a locales. Armá tu pedido y te respondemos con precio y fecha de entrega.</p>
+        </div>
+        <ul class="ventajas">
+          <li><span class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18v13H3z"/><path d="M3 7l3-4h12l3 4"/></svg></span><span><b>Cajas de 6 botellas.</b> Precio mayorista: <span class="pendiente">[precio por caja]</span>.</span></li>
+          <li><span class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 13h13V5H1z"/><path d="M14 9h5l4 4v4h-9z"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="19" r="2"/></svg></span><span><b>Entrega en Montevideo.</b> Resto del país: <span class="pendiente">[a coordinar]</span>.</span></li>
+          <li><span class="ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 21V7"/></svg></span><span><b>Material para el local.</b> Cartel de mostrador y la receta 3 + 1 impresa.</span></li>
+        </ul>
+      </div>
+      <form class="form" id="pedido" novalidate>
+        <div class="campo"><label for="pLocal">Nombre del local</label><input id="pLocal" name="local" autocomplete="organization" required></div>
+        <div class="campo"><label for="pNombre">Tu nombre</label><input id="pNombre" name="nombre" autocomplete="name" required></div>
+        <div class="campo"><label for="pTel">Teléfono o WhatsApp</label><input id="pTel" name="tel" type="tel" autocomplete="tel" required></div>
+        <div class="campo"><label for="pZona">Barrio o ciudad</label><input id="pZona" name="zona" required></div>
+        <div class="campo"><label for="pTipo">Tipo de local</label>
+          <select id="pTipo" name="tipo"><option>Almacén</option><option>Bar</option><option>Restaurante</option><option>Vinoteca</option><option>Otro</option></select>
+        </div>
+        <div class="campo"><span style="font-weight:700;font-size:15px" id="cajasLbl">Cajas de 6</span>
+          <div class="stepper" role="group" aria-labelledby="cajasLbl">
+            <button type="button" id="menos" aria-label="Una caja menos">−</button>
+            <output id="cajas" aria-live="polite">2</output>
+            <button type="button" id="mas" aria-label="Una caja más">+</button>
+          </div>
+        </div>
+        <div class="campo full"><label for="pMsj">Comentarios (opcional)</label><textarea id="pMsj" name="mensaje" placeholder="Horario de entrega, receta que te interesa, etc."></textarea></div>
+        <div class="total"><span><b id="botTotal">12</b> botellas en total</span><button class="btn btn-rojo" type="submit">Armar pedido</button></div>
+        <p class="error" id="pError" hidden>Completá nombre del local, tu nombre, teléfono y zona para armar el pedido.</p>
+        <div class="resumen" id="resumen" hidden>
+          <b>Tu pedido está listo para mandar:</b>
+          <pre id="resumenTxt"></pre>
+          <div class="botones" style="margin-top:0">
+            <a class="btn btn-azul" id="waPedido" href="#" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+            <button class="btn btn-claro" type="button" id="copiarPedido">Copiar texto</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="seccion contacto azulejos-azul" id="contacto">
+  <div class="wrap">
+    <div class="cabeza" style="margin-bottom:0">
+      <span class="etiqueta">Contacto</span>
+      <h2>Escribinos, que contestamos</h2>
+      <p>Pedidos, dudas o para contarnos cómo te fue con la receta.</p>
+    </div>
+    <div class="canales">
+      <div class="canal"><span class="etiqueta" style="color:var(--azul)">Instagram</span><span class="dato" id="igDato">@sifon.vermu</span><button type="button" data-copiar="igDato">Copiar</button></div>
+      <div class="canal"><span class="etiqueta" style="color:var(--azul)">WhatsApp</span><span class="dato" id="waDato">[número de WhatsApp]</span><button type="button" data-copiar="waDato">Copiar</button></div>
+      <div class="canal"><span class="etiqueta" style="color:var(--azul)">Email</span><span class="dato" id="mailDato">[email de contacto]</span><button type="button" data-copiar="mailDato">Copiar</button></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span class="logo">Sifón</span>
+    <span>Vermú casero · Montevideo, Uruguay</span>
+    <span>Beber con moderación. Prohibida su venta a menores de 18 años.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Datos de contacto: completar acá
+  const WHATSAPP = ''; // ej: '59899123456' (sin + ni espacios)
+
+  // Menú móvil
+  const nav=document.getElementById('nav'), menuBtn=document.getElementById('menuBtn');
+  menuBtn.addEventListener('click',()=>{const a=nav.classList.toggle('abierto');menuBtn.setAttribute('aria-expanded',a)});
+  document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('abierto');menuBtn.setAttribute('aria-expanded','false')}));
+
+  // Marquesina: duplicar para loop continuo
+  const pista=document.getElementById('pista'); pista.innerHTML+=pista.innerHTML;
+
+  // Sifón interactivo
+  const escena=document.querySelector('.escena'), btn=document.getElementById('sifonBtn');
+  const liquido=document.getElementById('liquido'), burbujas=document.getElementById('burbujas'), cont=document.getElementById('chorritos');
+  let n=0, nivel=300, ocupado=false;
+  const NS='http://www.w3.org/2000/svg';
+  btn.addEventListener('click',()=>{
+    if(ocupado) return; ocupado=true;
+    escena.classList.remove('apretado'); void escena.offsetWidth; escena.classList.add('apretado');
+    n++; cont.textContent=n;
+    nivel = nivel<=252 ? 300 : nivel-12;
+    liquido.setAttribute('y',nivel); liquido.setAttribute('height',390-nivel);
+    for(let i=0;i<9;i++){
+      const c=document.createElementNS(NS,'circle');
+      c.setAttribute('cx',270+Math.random()*64); c.setAttribute('cy',360-Math.random()*20);
+      c.setAttribute('r',2+Math.random()*3); c.setAttribute('fill','#FFFDF7'); c.setAttribute('opacity','.85');
+      c.setAttribute('class','burbuja'); c.style.animationDelay=(0.3+Math.random()*0.5)+'s';
+      burbujas.appendChild(c); setTimeout(()=>c.remove(),2600);
+    }
+    setTimeout(()=>{escena.classList.remove('apretado');ocupado=false},950);
+  });
+
+  // Fichas de recetas
+  const recetas={
+    tab1:{nombre:'Receta N°1',estado:'Tanda N°01',estilo:'Vermú rojo',tipo:'VERMÚ ROJO',vino:'[vino]',hierbas:'[hierbas de la receta]',macera:'[x] días',grad:'[xx]% vol'},
+    tab2:{nombre:'Receta N°2',estado:'En prueba',estilo:'[estilo: rojo, blanco o rosado]',tipo:'RECETA N°2',vino:'[vino]',hierbas:'[hierbas de la receta]',macera:'[x] días',grad:'[xx]% vol'}
+  };
+  const pend=v=>/^\[/.test(v)?'<span class="pendiente">'+v+'</span>':v;
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===t));
+    const r=recetas[t.id];
+    document.getElementById('ficha').setAttribute('aria-labelledby',t.id);
+    document.getElementById('fNombre').textContent=r.nombre;
+    document.getElementById('fEstado').textContent=r.estado;
+    document.getElementById('fEstilo').innerHTML=pend(r.estilo);
+    document.getElementById('fVino').innerHTML=pend(r.vino);
+    document.getElementById('fHierbas').innerHTML=pend(r.hierbas);
+    document.getElementById('fMacera').innerHTML=pend(r.macera);
+    document.getElementById('fGrad').innerHTML=pend(r.grad);
+    document.getElementById('botellaN').textContent=r.nombre;
+    document.getElementById('botellaTipo').textContent=r.tipo;
+  }));
+
+  // Calculadora 3 + 1
+  const rango=document.getElementById('nVasos');
+  const calc=()=>{
+    const v=+rango.value;
+    document.getElementById('vasosOut').textContent=v;
+    const ml=v*90, soda=v*30;
+    const fmt=m=>m>=1000?(m/1000).toLocaleString('es-UY',{maximumFractionDigits:2})+' L':m+' ml';
+    document.getElementById('rVermu').textContent=fmt(ml);
+    document.getElementById('rSoda').textContent=fmt(soda);
+    document.getElementById('rBotellas').textContent=Math.ceil(ml/750);
+    document.getElementById('rNaranjas').textContent=Math.ceil(v/8);
+  };
+  rango.addEventListener('input',calc); calc();
+
+  // Pedido mayorista
+  let cajas=2; const out=document.getElementById('cajas'), tot=document.getElementById('botTotal');
+  const pintaCajas=()=>{out.textContent=cajas;tot.textContent=cajas*6};
+  document.getElementById('menos').addEventListener('click',()=>{cajas=Math.max(1,cajas-1);pintaCajas()});
+  document.getElementById('mas').addEventListener('click',()=>{cajas=Math.min(99,cajas+1);pintaCajas()});
+  const form=document.getElementById('pedido'), err=document.getElementById('pError'), res=document.getElementById('resumen'), resTxt=document.getElementById('resumenTxt'), wa=document.getElementById('waPedido');
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const d=Object.fromEntries(new FormData(form));
+    const faltan=['local','nombre','tel','zona'].filter(k=>!(d[k]||'').trim());
+    if(faltan.length){err.hidden=false;res.hidden=true;document.getElementById({local:'pLocal',nombre:'pNombre',tel:'pTel',zona:'pZona'}[faltan[0]]).focus();return}
+    err.hidden=true;
+    const txt='Hola Sifón, quiero hacer un pedido:\n'+
+      '• Local: '+d.local+' ('+d.tipo+')\n'+
+      '• Contacto: '+d.nombre+' · '+d.tel+'\n'+
+      '• Zona: '+d.zona+'\n'+
+      '• Cantidad: '+cajas+' cajas ('+(cajas*6)+' botellas)'+
+      (d.mensaje&&d.mensaje.trim()?'\n• Comentarios: '+d.mensaje.trim():'');
+    resTxt.textContent=txt;
+    wa.href=WHATSAPP?'https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(txt):'https://wa.me/?text='+encodeURIComponent(txt);
+    res.hidden=false; res.scrollIntoView({block:'nearest',behavior:'smooth'});
+  });
+  const copiar=(texto,boton)=>{
+    const ok=()=>{const t=boton.textContent;boton.textContent='Copiado';setTimeout(()=>boton.textContent=t,1500)};
+    try{navigator.clipboard.writeText(texto).then(ok,()=>seleccionar(boton))}catch(e){seleccionar(boton)}
+  };
+  const seleccionar=boton=>{const el=boton.closest('.resumen,.canal').querySelector('pre,.dato');const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)};
+  document.getElementById('copiarPedido').addEventListener('click',e=>copiar(resTxt.textContent,e.currentTarget));
+  document.querySelectorAll('[data-copiar]').forEach(b=>b.addEventListener('click',()=>copiar(document.getElementById(b.dataset.copiar).textContent,b)));
+})();
+</script>
+
+</body>
+</html>
