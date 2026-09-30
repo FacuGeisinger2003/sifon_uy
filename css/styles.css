@@ -166,3 +166,8 @@ footer .logo{font-size:36px}
   .burbuja,.apretado #chorro{animation-duration:.01s}
   .btn{transition:none}
 }
+
+/* Fotos */
+img.foto{display:block;width:100%;height:auto;object-fit:cover;padding:0}
+.firma{display:flex;align-items:center;gap:14px}
+.avatar{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--tinta);flex-shrink:0}

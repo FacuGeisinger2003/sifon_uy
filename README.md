@@ -52,11 +52,17 @@ Todo lo que esté entre `[corchetes]` aparece en rojo en la web como pendiente.
 Buscá el texto que querés cambiar (Cmd+F) y reemplazalo. Los textos de cada sección están dentro de su `<section id="...">`.
 
 Pendientes en `index.html`:
-- `[rol]` de Facu y Bruno (sección Nosotros)
 - `[precio por caja]` y `[a coordinar]` (sección Para tiendas)
-- `[foto: ...]` (sección Nosotros)
 
-### 3. Poner una foto
+### 3. Fotos
+Las fotos están en `assets/img/`:
+- `facu-y-bruno-duotono.jpg` → foto principal de "Nosotros" (en los colores de la marca)
+- `facu-y-bruno.jpg` → la misma foto a color (para usarla, cambiá el nombre en `index.html`)
+- `facu.jpg` y `bruno.jpg` → las caritas redondas de las tarjetas
+
+Para cambiar una foto, subí la nueva a `assets/img/` **con el mismo nombre** y reemplaza a la anterior.
+
+#### Agregar una foto nueva
 1. Subí la foto a `assets/img/` (ej. `facu-y-bruno.jpg`, idealmente de menos de 500 KB).
 2. En `index.html`, reemplazá:
    ```html
@@ -106,8 +112,7 @@ Abrí `index.html` con doble clic y se ve en el navegador. Si editás `config.js
 - [ ] Confirmar que el usuario `@sifon.vermu` esté libre en Instagram
 - [ ] Datos reales de las recetas (vino, hierbas, maceración, graduación)
 - [ ] Precio mayorista por caja y zonas de entrega
-- [ ] Roles de Facu y Bruno
-- [ ] Fotos reales
+- [ ] Fotos del producto (botella, sifón, receta servida)
 - [ ] (Opcional) Dominio propio, ej. `sifon.com.uy`: se configura en Settings → Pages → Custom domain
 
 ---
